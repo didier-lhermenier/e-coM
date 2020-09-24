@@ -4,7 +4,18 @@
 
 Le projet e-coM est un module e-commerce pouvant se greffer sur tout site vitrine (non CMS) dépourvu de cette fonctionnalité
 
-## :rocket: User Guide
+## :rocket: Features
+
+* Admin Back office
+* Fiche produit (catégories, prix)
+* Gestion d'un compte utilisateur
+* Gestion d'un panier utilisateur
+* Modalités de paiement
+* Modalités d'envoi 
+* Gestion des promotions
+
+
+## :high_brightness:  User Guide
 
 Assurez-vous d'avoir installé composer (https://getcomposer.org)
 
@@ -17,3 +28,4 @@ symfony server:start
 ```
 
 Ouvrez votre navigateur à l'adresse http://localhost:8000
+
