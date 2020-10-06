@@ -1,4 +1,6 @@
 {
+    "name": "project/e-com",
+    "description": "Modulle e-commerce",
     "type": "project",
     "license": "proprietary",
     "require": {
