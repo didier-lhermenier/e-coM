@@ -24,7 +24,13 @@ git clone git@github.com:didiou/e-coM.git
 cd e-coM
 composer validate
 composer install
+composer update
 symfony server:start
+```
+Création de la base de données
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
 ```
 
 Ouvrez votre navigateur à l'adresse http://localhost:8000
