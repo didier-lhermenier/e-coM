@@ -44,9 +44,15 @@ class Promotion
      */
     private $promotionHasTypes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ArticleHasProperty::class, mappedBy="promotion")
+     */
+    private $articleHasProperties;
+
     public function __construct()
     {
         $this->promotionHasTypes = new ArrayCollection();
+        $this->articleHasProperties = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +133,37 @@ class Promotion
             // set the owning side to null (unless already changed)
             if ($promotionHasType->getPromotion() === $this) {
                 $promotionHasType->setPromotion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ArticleHasProperty[]
+     */
+    public function getArticleHasProperties(): Collection
+    {
+        return $this->articleHasProperties;
+    }
+
+    public function addArticleHasProperty(ArticleHasProperty $articleHasProperty): self
+    {
+        if (!$this->articleHasProperties->contains($articleHasProperty)) {
+            $this->articleHasProperties[] = $articleHasProperty;
+            $articleHasProperty->setPromotion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleHasProperty(ArticleHasProperty $articleHasProperty): self
+    {
+        if ($this->articleHasProperties->contains($articleHasProperty)) {
+            $this->articleHasProperties->removeElement($articleHasProperty);
+            // set the owning side to null (unless already changed)
+            if ($articleHasProperty->getPromotion() === $this) {
+                $articleHasProperty->setPromotion(null);
             }
         }
 
