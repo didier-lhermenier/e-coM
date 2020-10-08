@@ -17,7 +17,7 @@ Le projet e-coM est un module e-commerce pouvant se greffer sur tout site vitrin
 
 ## :high_brightness:  User Guide
 
-Assurez-vous d'avoir installé composer (https://getcomposer.org)
+- Assurez-vous d'avoir installé composer (https://getcomposer.org)
 
 ```bash
 git clone git@github.com:didiou/e-coM.git
@@ -28,10 +28,13 @@ composer update
 symfony server:start
 ```
 Création de la base de données
+
+- (Modifiez d'abord le fichier .env ou .env.local pour accéder à votre BDD)
+
 ```bash
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 ```
 
-Ouvrez votre navigateur à l'adresse http://localhost:8000
+- Ouvrez votre navigateur à l'adresse http://localhost:8000
 
