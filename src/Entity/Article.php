@@ -65,16 +65,16 @@ class Article
     private $stockMoves;
 
     /**
-     * @ORM\OneToMany(targetEntity=OrderHasArticle::class, mappedBy="article", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=LineArticle::class, mappedBy="article")
      */
-    private $orderHasArticles;
+    private $lineArticles;
 
     public function __construct()
     {
         $this->articleHasProperties = new ArrayCollection();
         $this->galeries = new ArrayCollection();
         $this->stockMoves = new ArrayCollection();
-        $this->orderHasArticles = new ArrayCollection();
+        $this->lineArticles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,37 +155,6 @@ class Article
     }
 
     /**
-     * @return Collection|ArticleHasProperty[]
-     */
-    public function getArticleHasProperties(): Collection
-    {
-        return $this->articleHasProperties;
-    }
-
-    public function addArticleHasProperty(ArticleHasProperty $articleHasProperty): self
-    {
-        if (!$this->articleHasProperties->contains($articleHasProperty)) {
-            $this->articleHasProperties[] = $articleHasProperty;
-            $articleHasProperty->setArticle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArticleHasProperty(ArticleHasProperty $articleHasProperty): self
-    {
-        if ($this->articleHasProperties->contains($articleHasProperty)) {
-            $this->articleHasProperties->removeElement($articleHasProperty);
-            // set the owning side to null (unless already changed)
-            if ($articleHasProperty->getArticle() === $this) {
-                $articleHasProperty->setArticle(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Galery[]
      */
     public function getGaleries(): Collection
@@ -245,30 +214,30 @@ class Article
     }
 
     /**
-     * @return Collection|OrderHasArticle[]
+     * @return Collection|LineArticle[]
      */
-    public function getOrderHasArticles(): Collection
+    public function getLineArticles(): Collection
     {
-        return $this->orderHasArticles;
+        return $this->lineArticles;
     }
 
-    public function addOrderHasArticle(OrderHasArticle $orderHasArticle): self
+    public function addLineArticle(LineArticle $lineArticle): self
     {
-        if (!$this->orderHasArticles->contains($orderHasArticle)) {
-            $this->orderHasArticles[] = $orderHasArticle;
-            $orderHasArticle->setArticle($this);
+        if (!$this->lineArticles->contains($lineArticle)) {
+            $this->lineArticles[] = $lineArticle;
+            $lineArticle->setArticle($this);
         }
 
         return $this;
     }
 
-    public function removeOrderHasArticle(OrderHasArticle $orderHasArticle): self
+    public function removeLineArticle(LineArticle $lineArticle): self
     {
-        if ($this->orderHasArticles->contains($orderHasArticle)) {
-            $this->orderHasArticles->removeElement($orderHasArticle);
+        if ($this->lineArticles->contains($lineArticle)) {
+            $this->lineArticles->removeElement($lineArticle);
             // set the owning side to null (unless already changed)
-            if ($orderHasArticle->getArticle() === $this) {
-                $orderHasArticle->setArticle(null);
+            if ($lineArticle->getArticle() === $this) {
+                $lineArticle->setArticle(null);
             }
         }
 
