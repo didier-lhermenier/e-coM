@@ -28,7 +28,7 @@ class DocumentHasType
     private $ref;
 
     /**
-     * @ORM\ManyToOne(targetEntity=documentType::class, inversedBy="documentHasTypes")
+     * @ORM\ManyToOne(targetEntity=DocumentType::class, inversedBy="documentHasTypes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $documentType;
