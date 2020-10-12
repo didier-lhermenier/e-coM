@@ -20,11 +20,6 @@ class Document
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
      * @ORM\OneToMany(targetEntity=LineArticle::class, mappedBy="document", orphanRemoval=true)
      */
     private $lineArticles;
@@ -35,40 +30,20 @@ class Document
     private $documentStatus;
 
     /**
-     * @ORM\OneToOne(targetEntity=Invoice::class, mappedBy="document", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=DocumentHasType::class, mappedBy="document", orphanRemoval=true)
      */
-    private $invoice;
+    private $documentHasTypes;
 
-    /**
-     * @ORM\OneToOne(targetEntity=CreditNote::class, mappedBy="document", cascade={"persist", "remove"})
-     */
-    private $creditNote;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Command::class, mappedBy="document", cascade={"persist", "remove"})
-     */
-    private $command;
 
     public function __construct()
     {
         $this->lineArticles = new ArrayCollection();
+        $this->documentHasTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     /**
@@ -114,52 +89,32 @@ class Document
         return $this;
     }
 
-    public function getInvoice(): ?Invoice
+    /**
+     * @return Collection|DocumentHasType[]
+     */
+    public function getDocumentHasTypes(): Collection
     {
-        return $this->invoice;
+        return $this->documentHasTypes;
     }
 
-    public function setInvoice(Invoice $invoice): self
+    public function addDocumentHasType(DocumentHasType $documentHasType): self
     {
-        $this->invoice = $invoice;
-
-        // set the owning side of the relation if necessary
-        if ($invoice->getDocument() !== $this) {
-            $invoice->setDocument($this);
+        if (!$this->documentHasTypes->contains($documentHasType)) {
+            $this->documentHasTypes[] = $documentHasType;
+            $documentHasType->setDocument($this);
         }
 
         return $this;
     }
 
-    public function getCreditNote(): ?CreditNote
+    public function removeDocumentHasType(DocumentHasType $documentHasType): self
     {
-        return $this->creditNote;
-    }
-
-    public function setCreditNote(CreditNote $creditNote): self
-    {
-        $this->creditNote = $creditNote;
-
-        // set the owning side of the relation if necessary
-        if ($creditNote->getDocument() !== $this) {
-            $creditNote->setDocument($this);
-        }
-
-        return $this;
-    }
-
-    public function getCommand(): ?Command
-    {
-        return $this->command;
-    }
-
-    public function setCommand(Command $command): self
-    {
-        $this->command = $command;
-
-        // set the owning side of the relation if necessary
-        if ($command->getDocument() !== $this) {
-            $command->setDocument($this);
+        if ($this->documentHasTypes->contains($documentHasType)) {
+            $this->documentHasTypes->removeElement($documentHasType);
+            // set the owning side to null (unless already changed)
+            if ($documentHasType->getDocument() === $this) {
+                $documentHasType->setDocument(null);
+            }
         }
 
         return $this;
