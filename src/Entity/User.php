@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -83,6 +85,16 @@ class User implements UserInterface
      * @ORM\Column(type="date")
      */
     private $birthday;
+
+    /**
+     * @ORM\OneToMany(targetEntity=AddressDelivery::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $addressDeliveries;
+
+    public function __construct()
+    {
+        $this->addressDeliveries = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -278,6 +290,37 @@ class User implements UserInterface
     public function setBirthday(\DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AddressDelivery[]
+     */
+    public function getAddressDeliveries(): Collection
+    {
+        return $this->addressDeliveries;
+    }
+
+    public function addAddressDelivery(AddressDelivery $addressDelivery): self
+    {
+        if (!$this->addressDeliveries->contains($addressDelivery)) {
+            $this->addressDeliveries[] = $addressDelivery;
+            $addressDelivery->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddressDelivery(AddressDelivery $addressDelivery): self
+    {
+        if ($this->addressDeliveries->contains($addressDelivery)) {
+            $this->addressDeliveries->removeElement($addressDelivery);
+            // set the owning side to null (unless already changed)
+            if ($addressDelivery->getUser() === $this) {
+                $addressDelivery->setUser(null);
+            }
+        }
 
         return $this;
     }
