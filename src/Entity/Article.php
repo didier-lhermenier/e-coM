@@ -69,6 +69,12 @@ class Article
      */
     private $lineArticles;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TVA::class, inversedBy="articles")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $TVA;
+
     public function __construct()
     {
         $this->articleHasProperties = new ArrayCollection();
@@ -240,6 +246,18 @@ class Article
                 $lineArticle->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTVA(): ?TVA
+    {
+        return $this->TVA;
+    }
+
+    public function setTVA(?TVA $TVA): self
+    {
+        $this->TVA = $TVA;
 
         return $this;
     }
