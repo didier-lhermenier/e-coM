@@ -16,6 +16,7 @@ class GaleryFixtures extends Fixture
             $img->setName($faker->sentence($nbWords = 3))
                 ->setImage('http://placeimg.com/400/400/tech');
             $manager->persist($img);
+            $this->setReference("image$i", $img);
         }
 
         $manager->flush();
