@@ -10,9 +10,6 @@ class TVAFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
-
         $TVA20 = new TVA();
         $TVA20->setName("TVA 20")
             ->setRate(0.2);
