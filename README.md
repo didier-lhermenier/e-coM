@@ -36,5 +36,11 @@ php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 ```
 
+- Si vous souhaitez utiliser des données fictives
+
+```bash
+php bin/console doctrine:fixtures:load
+```
+
 - Ouvrez votre navigateur à l'adresse http://localhost:8000
 
