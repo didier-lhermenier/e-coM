@@ -17,19 +17,17 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
         $categories = ["Composants", "Ordinateurs", "Périphériques", "Appareils photos", "TV Hifi Vidéo"];
 
         for ($i = 1; $i <= 40; $i++) {
-
-
             $article = new Article();
             $article = $this->getReference("article$i");
 
             $category = new Category();
-            $category = $this->getReference($categories[rand(0, count($categories))]);
+            $category = $this->getReference($categories[rand(0, count($categories) -1)]);
 
             $properties = new ArticleHasProperty();
             $properties
                 ->setArticle($article)
                 ->setCategory($category);
-                
+
             $manager->persist($properties);
         }
 
@@ -40,8 +38,7 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
     {
         return array(
             ArticleFixtures::class,
-            CategoryFixtures::class,
-            SubCategoryFixtures::class,
+            CategoryFixtures::class
         );
     }
 }
