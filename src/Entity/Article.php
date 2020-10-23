@@ -261,4 +261,24 @@ class Article
 
         return $this;
     }
+
+    /**
+     * Get the value of articleHasProperties
+     */ 
+    public function getArticleHasProperties()
+    {
+        return $this->articleHasProperties;
+    }
+
+    /**
+     * Set the value of articleHasProperties
+     *
+     * @return  self
+     */ 
+    public function setArticleHasProperties($articleHasProperties)
+    {
+        $this->articleHasProperties = $articleHasProperties;
+
+        return $this;
+    }
 }
