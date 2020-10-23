@@ -2,9 +2,13 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
+use App\Entity\TVA;
 use App\Entity\Galery;
 use App\Entity\Article;
-use App\Entity\TVA;
+use App\DataFixtures\TVAFixtures;
+use App\DataFixtures\GaleryFixtures;
+use App\Entity\ArticleHasProperty;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -41,14 +45,11 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             for ($j = 0; $j < $nbImg; $j++) {
                 // On cherche l'image de la galery parmi les 100 possibles
                 $galery = new Galery();
-
                 // On génère une valeur unique entre 1 et 100
                 $value = $this->randomizer($list);
-
                 // On récupère la galery
                 $galery = $this->getReference("image".$value);
-
-                // On affecte les propriétés
+                // On affecte la galerie à l'article
                 $article->addGalery($galery);
             }
 
@@ -63,7 +64,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             GaleryFixtures::class,
-            TVAFixtures::class
+            TVAFixtures::class,
         );
     }
 
