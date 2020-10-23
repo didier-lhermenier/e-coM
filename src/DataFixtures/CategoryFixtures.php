@@ -21,7 +21,7 @@ class CategoryFixtures extends Fixture
                     ->setDescription($faker->sentence($nbWords = 6, $variableNbWords = true));
             
             $manager->persist($category);   
-            $this->addReference($categories[$i], $categories[$i]);
+            $this->addReference($categories[$i], $category);
         }
 
         $manager->flush();
