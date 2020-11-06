@@ -20,7 +20,7 @@ class SubCategoryFixtures extends Fixture
                 ->setDescription($faker->sentence($nbWords = 6, $variableNbWords = true));
                 
                 $manager->persist($subCategory);
-                $this->addReference("subCat".chr(64+$letter)."$digit", $subCategory);
+                $this->addReference("subCategory".chr(64+$letter)."$digit", $subCategory);
             }    
         }
         $manager->flush();
