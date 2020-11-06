@@ -12,16 +12,14 @@ class CategoryFixtures extends Fixture
     {
         $faker = \Faker\Factory::create('fr_FR');
 
-        $categories = ["Composants", "Ordinateurs", "Périphériques", "Appareils photos", "TV Hifi Vidéo"];
-
-        for($i = 0; $i < count($categories); $i++){
+        for($i = 1; $i <= 10; $i++){
             $category = new Category();
             $category
-                    ->setName($categories[$i])
+                    ->setName(chr(64+$i))
                     ->setDescription($faker->sentence($nbWords = 6, $variableNbWords = true));
             
             $manager->persist($category);   
-            $this->addReference($categories[$i], $category);
+            $this->addReference("category".chr(64+$i), $category);
         }
 
         $manager->flush();
