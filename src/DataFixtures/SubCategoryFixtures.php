@@ -12,22 +12,16 @@ class SubCategoryFixtures extends Fixture
     {
         $faker = \Faker\Factory::create('fr_FR');
 
-        $subCategories = [
-            "Cartes grahiques", "Disques durs", "Claviers", "Ecrans", "Casques", "Souris",
-            "Ordinateurs de bureau", "Portable", "Mac",
-            "Imprimantes", "Hauts-parleurs", "Clefs USB",
-            "Compact", "Bridge", "Réflexe",
-            "TV LCD", "TV OLED", "Chaîne HiFi", "Home Cinéma", "Lecteur Blu-Ray"
-        ];
-
-        for ($i = 0; $i < count($subCategories); $i++) {
-            $subCategory = new subCategory();
-            $subCategory
-                ->setName($subCategories[$i])
+        for ($letter = 1; $letter <= 10; $letter++) {
+            for ($digit = 1; $digit <= 3; $digit++) {
+                $subCategory = new subCategory();
+                $subCategory
+                ->setName(chr(64+$letter)."$digit")
                 ->setDescription($faker->sentence($nbWords = 6, $variableNbWords = true));
-
-            $manager->persist($subCategory);
-            $this->addReference($subCategories[$i], $subCategory);
+                
+                $manager->persist($subCategory);
+                $this->addReference("subCat".chr(64+$letter)."$digit", $subCategory);
+            }    
         }
         $manager->flush();
     }
