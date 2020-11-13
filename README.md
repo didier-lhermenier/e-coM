@@ -20,7 +20,7 @@ Le projet e-coM est un module e-commerce pouvant se greffer sur tout site vitrin
 - Assurez-vous d'avoir installé composer (https://getcomposer.org)
 
 ```bash
-git clone git@github.com:didiou/e-coM.git
+git clone git@github.com:didier-lhermenier/e-coM.git
 cd e-coM
 composer validate
 composer install
