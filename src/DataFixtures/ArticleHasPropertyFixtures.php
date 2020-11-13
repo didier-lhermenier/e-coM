@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Article;
 use App\Entity\ArticleHasProperty;
 use App\Entity\Category;
+use App\Entity\Promotion;
 use App\Entity\SubCategory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -32,17 +33,21 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
 
             // Initialisation de la liste sous-catégorie
             $listSubCats = [];
-            
+
             // On fait autant de tours que de sous-cat ($numSubCats)
             do {
                 $subCategory = new SubCategory();
                 $subCategory = $numSubCats > 0 ? $this->getSubCategory($catLetter, $listSubCats) : null;
 
+                $promotion = new Promotion();
+                $promotion = $this->getRandomPromotion();
+
                 $properties = new ArticleHasProperty();
                 $properties
                     ->setArticle($article)
                     ->setCategory($category)
-                    ->setSubCategory($subCategory);
+                    ->setSubCategory($subCategory)
+                    ->setPromotion($promotion);
 
                 $manager->persist($properties);
 
@@ -58,7 +63,8 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
         return array(
             ArticleFixtures::class,
             CategoryFixtures::class,
-            SubCategoryFixtures::class
+            SubCategoryFixtures::class,
+            PromotionFixtures::class
         );
     }
 
@@ -75,7 +81,7 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
             // On détermine un chiffre au hasard entre 1 et 3
             $digit = strval(rand(1, 3));
             // On regarde si le chiffre est dans le tableau fourni
-        } while(in_array($digit, $listSubCats));
+        } while (in_array($digit, $listSubCats));
         // Fin de la boucle
 
         // Ajouter le chiffre dans le tableau
@@ -83,5 +89,20 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
 
         // Retourner la sous-cat
         return $this->getReference("subCategory" . $catLetter . $digit);
+    }
+
+    /**
+     * Permet de récupérer une promotion ou de renvoyer un null si le hasard le décide
+     */
+    public function getRandomPromotion()
+    {
+        // 10% des articles auront droit à une promotion
+        if (rand(0, 100) <= 20) {
+            $values = ["launch bf 2020", "final bf 2020", "before christmas", "after christmas"];
+            $promotion = new Promotion();
+            $promotion = $this->getReference($values[array_rand($values)]);
+            return $promotion;
+        }
+        return null;
     }
 }
