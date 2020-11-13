@@ -109,37 +109,6 @@ class Promotion
     }
 
     /**
-     * @return Collection|PromotionHasType[]
-     */
-    public function getPromotionHasTypes(): Collection
-    {
-        return $this->promotionHasTypes;
-    }
-
-    public function addPromotionHasType(PromotionHasType $promotionHasType): self
-    {
-        if (!$this->promotionHasTypes->contains($promotionHasType)) {
-            $this->promotionHasTypes[] = $promotionHasType;
-            $promotionHasType->setPromotion($this);
-        }
-
-        return $this;
-    }
-
-    public function removePromotionHasType(PromotionHasType $promotionHasType): self
-    {
-        if ($this->promotionHasTypes->contains($promotionHasType)) {
-            $this->promotionHasTypes->removeElement($promotionHasType);
-            // set the owning side to null (unless already changed)
-            if ($promotionHasType->getPromotion() === $this) {
-                $promotionHasType->setPromotion(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|ArticleHasProperty[]
      */
     public function getArticleHasProperties(): Collection
