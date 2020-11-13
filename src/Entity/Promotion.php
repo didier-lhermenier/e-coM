@@ -40,14 +40,14 @@ class Promotion
     private $dateEnd;
 
     /**
-     * @ORM\OneToMany(targetEntity=PromotionHasType::class, mappedBy="promotion", orphanRemoval=true)
-     */
-    private $promotionHasTypes;
-
-    /**
      * @ORM\OneToMany(targetEntity=ArticleHasProperty::class, mappedBy="promotion")
      */
     private $articleHasProperties;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=PromotionEvent::class, inversedBy="promotions")
+     */
+    private $promotionEvent;
 
     public function __construct()
     {
@@ -135,6 +135,18 @@ class Promotion
                 $articleHasProperty->setPromotion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPromotionEvent(): ?PromotionEvent
+    {
+        return $this->promotionEvent;
+    }
+
+    public function setPromotionEvent(?PromotionEvent $promotionEvent): self
+    {
+        $this->promotionEvent = $promotionEvent;
 
         return $this;
     }
