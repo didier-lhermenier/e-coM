@@ -49,6 +49,16 @@ class Promotion
      */
     private $promotionEvent;
 
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=2)
+     */
+    private $value;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $type;
+
     public function __construct()
     {
         $this->promotionHasTypes = new ArrayCollection();
@@ -147,6 +157,30 @@ class Promotion
     public function setPromotionEvent(?PromotionEvent $promotionEvent): self
     {
         $this->promotionEvent = $promotionEvent;
+
+        return $this;
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function setValue(string $value): self
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
