@@ -28,33 +28,37 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
             // On va donner entre 0 et 3 sous-cat au hasard parmi les 3 sous-cat disponibles
             $numSubCats = rand(0, 3);
 
-            // Initialisation de la boucle
-            $loop = 0;
+            // Initialisation du compteur de boucle sous-cat
+            $loopSubCat = 0;
 
             // Initialisation de la liste sous-catégorie
             $listSubCats = [];
+
+            // Initialisation de la liste des promotions (parmi les n promotions possibles pour cet article)
+            $promotions = $this->getRandomPromotions(20);
 
             // On fait autant de tours que de sous-cat ($numSubCats)
             do {
                 $subCategory = new SubCategory();
                 $subCategory = $numSubCats > 0 ? $this->getSubCategory($catLetter, $listSubCats) : null;
 
-                $promotion = new Promotion();
-                $promotion = $this->getRandomPromotion();
+                // Initialisation du compteur de boucle promo
+                $loopPromo = 0;
 
-                $properties = new ArticleHasProperty();
-                $properties
-                    ->setArticle($article)
-                    ->setCategory($category)
-                    ->setSubCategory($subCategory)
-                    ->setPromotion($promotion);
+                // On fait autant de tours que de promotions ($promotions)
+                do {
+                    $promotion = new Promotion();
+                    $promotion = !empty($promotions) ? $this->getReference($promotions[$loopPromo]) : null;
 
-                $manager->persist($properties);
+                    // On persiste les données
+                    $this->persist($manager, $article, $category, $subCategory, $promotion);
 
-                $loop++;
-            } while ($loop < $numSubCats);
+                    $loopPromo++;
+                } while ($loopPromo < count($promotions));
+
+                $loopSubCat++;
+            } while ($loopSubCat < $numSubCats);
         }
-
         $manager->flush();
     }
 
@@ -73,16 +77,17 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
      * Passage par référence & en paramètre de la méthode pour incrémenter le tableau listSubCats dans la boucle do while
      *
      * @param string $catLetter
+     * @param array &$listSubCats
      */
-    public function getSubCategory(string $catLetter, array &$listSubCats)
+    public function getSubCategory(string $catLetter, array &$listSubCats): SubCategory
     {
         // Boucler tant que la valeur trouvée est dans la liste fournie
         do {
             // On détermine un chiffre au hasard entre 1 et 3
             $digit = strval(rand(1, 3));
+
             // On regarde si le chiffre est dans le tableau fourni
         } while (in_array($digit, $listSubCats));
-        // Fin de la boucle
 
         // Ajouter le chiffre dans le tableau
         $listSubCats[] = $digit;
@@ -92,17 +97,49 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
     }
 
     /**
-     * Permet de récupérer une promotion ou de renvoyer un null si le hasard le décide
+     * Permet de retourner une liste de promotions ou un tableau vide si le hasard le décide
      */
-    public function getRandomPromotion()
+    public function getRandomPromotions(float $lucky): array
     {
-        // 10% des articles auront droit à une promotion
-        if (rand(0, 100) <= 20) {
-            $values = ["launch bf 2020", "final bf 2020", "before christmas", "after christmas"];
-            $promotion = new Promotion();
-            $promotion = $this->getReference($values[array_rand($values)]);
-            return $promotion;
+        // On initialise le tableau des promotions à retourner
+        $promotions = [];
+
+        // on aura $lucky % des articles qui auront droit à une promotion
+        if (rand(0, 100) <= $lucky) {
+            // Liste des références de promotions possibles ( PromotionFixtures => addReference... )
+            $references = ["launch bf 2020", "final bf 2020", "before christmas", "after christmas"];
+
+            // On décide du nombre n de promotions à attribuer (de 1 à x éléments contenus dans $references)
+            $n = rand(1, count($references));
+
+            // On génère un tableau contenant les n index au hasard de la liste $references
+            $referenceKeys = array_rand($references, $n);
+
+            // Si n = 1, on doit convertir le résultat de type entier en tableau ( cf doc array_rand() )
+            if (gettype($referenceKeys) == "integer") $referenceKeys = [$referenceKeys];
+
+            // On génère notre liste de promotions à partir de notre liste d'index
+            foreach ($referenceKeys as $key) {
+                $promotions[] = $references[$key];
+            }
         }
-        return null;
+
+        // On retourne le tableau de promotions
+        return $promotions;
+    }
+
+    /**
+     * Permet de persister les données de fixture
+     */
+    public function persist(ObjectManager $manager, Article $article, Category $category, ?SubCategory $subCategory, ?Promotion $promotion): void
+    {
+        $properties = new ArticleHasProperty();
+        $properties
+            ->setArticle($article)
+            ->setCategory($category)
+            ->setSubCategory($subCategory)
+            ->setPromotion($promotion);
+
+        $manager->persist($properties);
     }
 }
