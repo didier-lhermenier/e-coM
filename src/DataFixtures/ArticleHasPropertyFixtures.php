@@ -129,7 +129,7 @@ class ArticleHasPropertyFixtures extends Fixture implements DependentFixtureInte
     }
 
     /**
-     * Permet de perister les données de fixture
+     * Permet de persister les données de fixture
      */
     public function persist(ObjectManager $manager, Article $article, Category $category, ?SubCategory $subCategory, ?Promotion $promotion): void
     {
