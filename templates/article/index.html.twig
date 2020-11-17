@@ -1,20 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ArticleController!{% endblock %}
+{% block title %}Hello ArticleController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+	{% for article in articles %}
+		<article>
+			<h2>{{ article.name }}</h2>
+			<div>{{ article.description }}
+				<div>
+					<strong>Fiche article</strong>
+					<p>
+						Prix de l'article :
+						{{ article.price }}
+						<br>
+						Poids de l'article :
+						{{ article.weight }}
+						kgs
+						<br>
+						Dimension de l'article :
+						{{ article.dimension }}
+					</p>
+				</div>
+				<div>
+					<p>
+						Catégorie :
+						{{ article.articleHasProperties[0].category.name }}
+					</p>
+					<p>
+						Sous-catégorie :
+						<ol>
+							{% if article.articleHasProperties[0].subCategory %}
+								{% for articleHasProperty in article.articleHasProperties %}
+									<li>{{ articleHasProperty.subCategory.name }}</li>
+								{% endfor %}
+							{% else %}
+								Il n'y a pas de sous-catégorie.
+							{% endif %}
+						</ol>
+					</p>
+					<p>
+						Promotions :
+						<div>
+							{% if article.articleHasProperties[0].promotion %}
+								{% for articleHasProperty in article.articleHasProperties %}
+									<div>{{ articleHasProperty.promotion.promotionEvent.label }}</div>
+									<div>{{ articleHasProperty.promotion.name }}</div>
+									<div>Date de création :
+										{{ articleHasProperty.promotion.createdAt | date('d m Y') }}</div>
+									<div>Date de début :
+										{{ articleHasProperty.promotion.dateStart | date('d m Y') }}</div>
+									<div>Date de fin :
+										{{ articleHasProperty.promotion.dateEnd | date('d m Y') }}</div>
+									<div>Type de promotion :
+										{{ articleHasProperty.promotion.type }}</div>
+									<div>Valeur de la promotion :
+										{{ articleHasProperty.promotion.value }}</div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'S:/WEB/TEST/symfony_projects/e-coM/src/Controller/ArticleController.php'|file_link(0) }}">src/Controller/ArticleController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'S:/WEB/TEST/symfony_projects/e-coM/templates/article/index.html.twig'|file_link(0) }}">templates/article/index.html.twig</a></code></li>
-    </ul>
-</div>
+								{% endfor %}
+							{% else %}
+								Il n'y a pas de promotion pour cet article.
+							{% endif %}
+						</div>
+					</p>
+				</ul>
+			</div>
+		</article>
+		<hr>
+	{% endfor %}
 {% endblock %}
